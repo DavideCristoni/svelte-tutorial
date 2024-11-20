@@ -2,6 +2,24 @@
   import svelteLogo from './assets/svelte.svg'
   import viteLogo from '/vite.svg'
   import Counter from './lib/Counter.svelte'
+
+  let beltColour = 'Black'
+  let firstName = "John"
+  let lastName = "Doe"
+
+  $: fullName = `${firstName} ${lastName}` //reactive value
+
+  $:{
+    console.log(beltColour)
+    console.log(fullName)
+  } //reactive statement
+
+  const handleClick = () => {
+    beltColour = "White"
+  }
+  const handleInput = (event) => {
+    beltColour = event.target.value
+  }
 </script>
 
 <main>
@@ -15,8 +33,16 @@
   </div>
   <h1>Vite + Svelte</h1>
 
+  <p style="color: {beltColour}">{firstName} {lastName} has a {beltColour} belt</p>
+
   <div class="card">
     <Counter />
+  </div>
+
+  <div class="card">
+    <input type="text" bind:value={firstName} />
+    <input type="text" bind:value={lastName} />
+    <input type="text" bind:value={beltColour}>
   </div>
 
   <p>
