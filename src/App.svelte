@@ -1,73 +1,50 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+  
+  let people= [
+    {name: 'Yoshi', beltColour: 'black', age: 25, id:1},
+    {name: 'Mario', beltColour: 'orange', age: 35, id:2},
+    {name: 'Luigi', beltColour: 'brown', age: 20, id:3}
+  ];
 
-  let beltColour = 'Black'
-  let firstName = "John"
-  let lastName = "Doe"
-
-  $: fullName = `${firstName} ${lastName}` //reactive value
-
-  $:{
-    console.log(beltColour)
-    console.log(fullName)
-  } //reactive statement
-
-  const handleClick = () => {
-    beltColour = "White"
+  const handleClick = (id) => {
+    //delete person from list
+    people = people.filter( (person) =>person.id !== id);
   }
-  const handleInput = (event) => {
-    beltColour = event.target.value
-  }
+
+  let num=15;
+
 </script>
 
+{#if num > 20}
+  <p>Greater than 20</p>
+{:else if num > 5}
+  <p>Greater than 5</p>
+{/if}
+
 <main>
-  <div>
-    <a href="https://vite.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+  {#each people as person (person.id)} <!-- person.id link the elements nder the hood with the specific element -->
+    <div>
+      <h4>{person.name}</h4>
+      <p>{person.age} years old, {person.beltColour} belt.</p>
+      <button on:click={() => handleClick(person.id)}>Delete</button>
+    </div>
+  {:else}
+    <p>There are no people</p>
+  {/each}
 
-  <p style="color: {beltColour}">{firstName} {lastName} has a {beltColour} belt</p>
-
-  <div class="card">
-    <Counter />
-  </div>
-
-  <div class="card">
-    <input type="text" bind:value={firstName} />
-    <input type="text" bind:value={lastName} />
-    <input type="text" bind:value={beltColour}>
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+  main {
+    text-align: center;
+    padding: 1em;
+    max-width: 240px;
+    margin: 0 auto;
   }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
+
+  @media (min-width: 640px) {
+    main {
+      max-width: none;
+    }
   }
 </style>
