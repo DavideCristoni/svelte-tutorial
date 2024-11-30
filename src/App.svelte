@@ -1,64 +1,31 @@
 <script>
-  
-  import Modal from './Modal.svelte';
-  import AddPersonForm from './AddPersonForm.svelte';
+  import Header from "./components/Header.svelte";
+  import Footer from "./components/Footer.svelte";
+  import Tabs from "./shared/Tabs.svelte";
 
-  let showModal = false;
+  //tabs
+  let items = ["Current Polls", "Add New Poll"];
+  let activeItem = "Current Polls";
 
-  let people= [
-    {name: 'Yoshi', beltColour: 'black', age: 25, id:1},
-    {name: 'Mario', beltColour: 'orange', age: 35, id:2},
-    {name: 'Luigi', beltColour: 'brown', age: 20, id:3}
-  ];
-
-  const toggleModal = () => {
-    showModal = !showModal;
-  }
-
-  const handleClick = (id) => {
-    //delete person from list
-    people = people.filter( (person) =>person.id !== id);
-  }
-
-  const addPerson = (e) => {
-    people = [...people, e.detail];
-    toggleModal();
-  }
-
+  const tabChange = (e) => {
+    activeItem = e.detail;
+  };
 </script>
 
-<Modal {showModal} on:click={toggleModal}>
-  <AddPersonForm on:addPerson={addPerson}/>
-</Modal> <!-- showModal is a prop value and it is a shorthand, we do not have to specify the name if it is the same as the name of the variable -->
-
+<Header />
 <main>
-  <button on:click|once={toggleModal}>Open modal</button>
-  {#each people as person (person.id)} <!-- person.id link the elements nder the hood with the specific element -->
-    <div>
-      <h4>{person.name}</h4>
-      {#if person.beltColour === 'black'}
-        <p><strong>MASTER NINJA</strong></p>
-      {/if}
-      <p>{person.age} years old, {person.beltColour} belt.</p>
-      <button on:click={() => handleClick(person.id)}>Delete</button>
-    </div>
-  {:else}
-    <p>There are no people</p>
-  {/each}
-
+  <Tabs {activeItem} {items} on:tabChange={tabChange} />
+  {#if activeItem === "Current Polls"}
+    <p>Poll list component goes here</p>
+  {:else if activeItem === "Add New Poll"}
+    <p>New poll from component goes here</p>
+  {/if}
 </main>
+<Footer />
 
 <style>
   main {
-    text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
-  }
-
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
-    }
+    max-width: 960px;
+    margin: 40px auto;
   }
 </style>
