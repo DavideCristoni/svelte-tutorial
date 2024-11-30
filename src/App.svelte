@@ -11,7 +11,7 @@
     {name: 'Luigi', beltColour: 'brown', age: 20, id:3}
   ];
 
-  const openModal = () => {
+  const toggleModal = () => {
     showModal = !showModal;
   }
 
@@ -20,14 +20,19 @@
     people = people.filter( (person) =>person.id !== id);
   }
 
+  const addPerson = (e) => {
+    people = [...people, e.detail];
+    toggleModal();
+  }
+
 </script>
 
-<Modal {showModal} on:click={openModal}>
-  <AddPersonForm />
+<Modal {showModal} on:click={toggleModal}>
+  <AddPersonForm on:addPerson={addPerson}/>
 </Modal> <!-- showModal is a prop value and it is a shorthand, we do not have to specify the name if it is the same as the name of the variable -->
 
 <main>
-  <button on:click|once={openModal}>Open modal</button>
+  <button on:click|once={toggleModal}>Open modal</button>
   {#each people as person (person.id)} <!-- person.id link the elements nder the hood with the specific element -->
     <div>
       <h4>{person.name}</h4>
